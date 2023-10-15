@@ -8,4 +8,4 @@ def fn_hack_7():
     while i <= 5:
         result.append(i)
         i = i + 1
-    return result
+    return result[::-1]
