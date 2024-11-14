@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <div id="chatbot-icon" class="chatbot-icon" onclick="toggleChat()">
+        <img src="{{url_for('static', filename='chatbot_icon.png')}}" alt="Icono">
+    </div>
+    
+    <div id="chat-container" class="chat-container" style="display: none;">
+        <div class="titulo"> Asistente smartie
+            <img src="{{url_for('static', filename='x.png')}}" alt="Cerrar" class="close-icon" onclick="closeChat()">
+        </div>
+        <div id="chatbox" class="chatbox" style="background-color: aqua;">
+            <!-- <p class="bot-message"> ¡Hola!😊 gracias por comunicarte con <b>SmartBuy, C.A.</b>,  En Smart Buy, nos especializamos en ofrecerte los productos tecnológicos de más alta calidad del mercado. Desde soluciones SmartHome hasta sistemas Wifi, accesorios para TV y cine en casa, y nuestros exclusivos Smartpacks, tenemos todo lo que necesitas para estar a la vanguardia. <br><br>
+                Las compras inteligentes nos acercan a nuestro hogar soñado y a construir el futuro que queremos para disfrutar las actividades digitales que más nos gustan. En SmartBuy queremos ser tu compañero para la nueva era digital, estamos a un solo clic de distancia. <br><br>
+                Personas inteligentes. Hogares inteligentes. Compras inteligentes. <br>
+                Nuestro asistente virtual <b>Smartie</b> atenderá tu solicitud, elije una opción.
+                </p> -->
+        </div>
+        <div class="menu">
+            <button onclick="sendMessage('1')">Catálagos de productos</button>
+            <button onclick="sendMessage('2')">Compas</button>
+            <button onclick="sendMessage('3')">Asesoría comercial</button>
+        </div>
+    </div>
+
+    <script>
+      
+      function toggleChat() {
+            const chatContainer = document.getElementById('chat-container');
+            const chatbox = document.getElementById('chatbox');
+
+            if (chatContainer.style.display === 'none'){
+                chatContainer.style.display = 'block';
+
+                chatbox.innerHTML = '';
+
+                const newMessage = document.createElement('p');
+                newMessage.classList.add('bot-message');
+                newMessage.innerHTML = `
+                ¡Hola!😊 gracias por comunicarte con <b>SmartBuy, C.A.</b>,  
+                En SmartBuy, nos especializamos en ofrecerte los productos tecnológicos de más alta calidad del mercado. 
+                Desde soluciones SmartHome hasta sistemas Wifi, accesorios para TV y cine en casa, y nuestros exclusivos Smartpacks, 
+                tenemos todo lo que necesitas para estar a la vanguardia. <br><br>
+                Las compras inteligentes nos acercan a nuestro hogar soñado y a construir el futuro que queremos para disfrutar las actividades digitales que más nos gustan. 
+                En SmartBuy queremos ser tu compañero para la nueva era digital, estamos a un solo clic de distancia. <br><br>
+                Personas inteligentes. Hogares inteligentes. Compras inteligentes. <br>
+                Nuestro asistente virtual <b>Smartie</b> atenderá tu solicitud, elige una opción.
+                `;
+                chatbox.appendChild(newMessage);
+            } else {
+                    chatContainer.style.display = 'none';
+                }
+        }
+
+        function closeChat(){
+            const chatContainer = document.getElementById('chat-container')
+            chatContainer.style.display = 'none';
+        }
+
+
+        function sendMessage(choice) {
+            const chatbox = document.getElementById('chatbox');
+
+            const qaData = {
+                "1": {"question": "Catálogos de productos", "answer": "¡Estoy bien, gracias! ¿Y tú?"},
+                "2": {"question": "Compras", "answer": "Soy un chatbot creado con Flask."},
+                "3": {"question": "Asesoría comercial", "answer": "Lo siento, no tengo acceso al reloj en este momento."}
+            };
+            
+            const userQuestion = qaData[choice].question;
+            const botAnswer = qaData[choice].answer;
+
+            const userMessage = document.createElement('p');
+            userMessage.classList.add('user-message');
+            userMessage.textContent = userQuestion;
+
+            const botMessage = document.createElement('p');
+            botMessage.classList.add('bot-message');
+            botMessage.innerHTML = botAnswer;
+
+            chatbox.appendChild(userMessage);
+            chatbox.appendChild(botMessage);
+
+            chatbox.scrollTop = chatbox.scrollHeight; // Desplazar hacia abajo
+           /*  fetch('/get_answer', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ choice: choice })
+            })
+            .then(response => response.json())
+            .then(data => {
+                chatbox.innerHTML += `<p class="bot-message">${data.answer}</p>`;
+            }); */
+        }
+    </script>
+
+</body>
+</html>
